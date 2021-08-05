@@ -1,27 +1,36 @@
 name: Lint
+
 on:
-  pull_request:
-    paths-ignore:
-      - "**.md"
   push:
-    paths-ignore:
-      - "**.md"
+    branches:
+      - main
+  pull_request:
 
 jobs:
-  lint:
+  shellcheck:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Run ShellCheck
-        run: shellcheck -x bin/*
 
-  format:
-    runs-on: macos-latest
+      - name: Install asdf dependencies
+        uses: asdf-vm/actions/install@v1
+
+      - name: Run ShellCheck
+        run: scripts/shellcheck.bash
+
+  shellfmt:
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Install shfmt
-        run: brew install shfmt
+
+      - name: Install asdf dependencies
+        uses: asdf-vm/actions/install@v1
+
+      - name: List file to shfmt
+        run: shfmt -f .
+
       - name: Run shfmt
-        run: shfmt -d -i 2 -ci .
+        run: scripts/shfmt.bash
+
