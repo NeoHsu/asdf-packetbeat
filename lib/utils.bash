@@ -31,8 +31,6 @@ list_github_tags() {
 }
 
 list_all_versions() {
-  # TODO: Adapt this. By default we simply list the tag names from GitHub releases.
-  # Change this function if packetbeat has other means of determining installable versions.
   list_github_tags
 }
 
@@ -41,7 +39,6 @@ download_release() {
   version="$1"
   filename="$2"
 
-  # TODO: Adapt the release URL convention for packetbeat
   url="$GH_REPO/archive/v${version}.tar.gz"
 
   echo "* Downloading $TOOL_NAME release $version..."
@@ -61,7 +58,6 @@ install_version() {
     mkdir -p "$install_path"
     cp -r "$ASDF_DOWNLOAD_PATH"/* "$install_path"
 
-    # TODO: Asert packetbeat executable exists.
     local tool_cmd
     tool_cmd="$(echo "$TOOL_TEST" | cut -d' ' -f1)"
     test -x "$install_path/bin/$tool_cmd" || fail "Expected $install_path/bin/$tool_cmd to be executable."
